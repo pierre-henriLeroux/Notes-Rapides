@@ -2,7 +2,7 @@
 
 App demo project of note taking by category, date and place
 
-# libs 
+### libs 
 
 - Room : BDD SQLite
 - Hilt
@@ -12,9 +12,11 @@ tests :
 
 Junit4, Espresso, truth
 
-# TODO
+### TODO
 
-[] Improved filtering by location
-[] Adding a forecast timer and/or realization timer
-[] Improving notes by Markdown text
+[ ] Improved filtering by location
+
+[ ] Adding a forecast timer and/or realization timer
+
+[ ] Improving notes by Markdown text
 
