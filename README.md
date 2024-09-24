@@ -1,20 +1,21 @@
 # Notes-Rapides
 
-App demo project of note taking by category, date and place
+Demo project app.
 
-# libs 
+Note taking by category, date and place
 
-- Room : BDD SQLite
-- Hilt
+### libs
+
+- Room (BDD SQLite)
+- Hilt (Dependency injection)
 - Jetpack compose : (UI)
 
 tests :
 
 Junit4, Espresso, truth
 
-# TODO
+### TODO
 
-[] Improved filtering by location
-[] Adding a forecast timer and/or realization timer
-[] Improving notes by Markdown text
-
+[ ] Improved filtering by location
+[ ] Adding a forecast timer and/or realization timer
+[ ] Improving notes by Markdown text
