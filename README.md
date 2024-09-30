@@ -17,5 +17,7 @@ Junit4, Espresso, truth
 ### TODO
 
 [ ] Improved filtering by location
+
 [ ] Adding a forecast timer and/or realization timer
-[ ] Improving notes by Markdown text
+
+[ ] Improving notes with Markdown text
