@@ -1,4 +1,4 @@
-package fr.phlab.notesrapides
+package fr.phlab.notesrapides.bdd
 
 import androidx.room.Room
 import androidx.test.core.app.ApplicationProvider.getApplicationContext
@@ -9,6 +9,7 @@ import fr.phlab.notesrapides.data.bdd.Category
 import junit.framework.TestCase.assertEquals
 import junit.framework.TestCase.assertNotNull
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.test.runTest
 import org.junit.After
 import org.junit.Before
@@ -26,11 +27,9 @@ class CategoryDaoTest {
     private val category1Bis = Category(id = 1, name = "Category 1 bis", isPref = true)
     private val category2 = Category(id = 2, name = "Category 2", isPref = false)
 
-    // using an in-memory database because the information stored here disappears when the
-    // process is killed
+    // using an in-memory database
     private lateinit var database: AppDatabase
 
-    // Ensure that we use a new database for each test.
     @Before
     fun initDb() {
         database = Room.inMemoryDatabaseBuilder(
@@ -71,6 +70,18 @@ class CategoryDaoTest {
         assertEquals(category1Bis.id, loaded?.id)
         assertEquals(category1Bis.name, loaded?.name)
         assertEquals(category1Bis.isPref, loaded?.isPref)
+    }
+
+    @Test
+    fun getAllTest() = runTest {
+
+        database.categoryDao().insert(category1)
+        database.categoryDao().insert(category2)
+
+        val loaded = database.categoryDao().getAll().first()
+
+        assertEquals(2, loaded.size)
+
     }
 
 
