@@ -49,6 +49,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.unit.toSize
 import androidx.compose.ui.window.Dialog
+import androidx.compose.ui.window.DialogProperties
 import androidx.hilt.navigation.compose.hiltViewModel
 import fr.phlab.notesrapides.R
 import fr.phlab.notesrapides.data.bdd.Category
@@ -67,7 +68,7 @@ fun DialogDatePicker(
     val dateState = rememberDatePickerState(
         initialSelectedDateMillis = currentDate?.time ?: System.currentTimeMillis()
     )
-    Dialog(onDismissRequest = onDismiss) {
+    Dialog(onDismissRequest = onDismiss, properties = DialogProperties(usePlatformDefaultWidth = false)) {
         Column(
             modifier = Modifier
                 .fillMaxWidth()
@@ -90,7 +91,7 @@ fun DialogDatePicker(
             ) {
                 Text(stringResource(id = R.string.date_null))
             }
-            Row()
+            Row(modifier = Modifier.padding(start = 16.dp, end = 16.dp))
             {
                 TextButton(
                     onClick = {
