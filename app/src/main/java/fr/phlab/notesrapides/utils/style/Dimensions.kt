@@ -8,6 +8,10 @@ class Dimensions(
     val viewSpacing: Dp,
     val screenSpacing:Dp,
 )
+{
+    var  noteBoxHeight = 100.dp
+    var  noteBoxWidth = 200.dp
+}
 
 val compactDimensions = Dimensions(
     viewSpacing = 8.dp,
