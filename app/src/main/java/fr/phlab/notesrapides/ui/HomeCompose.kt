@@ -1,5 +1,6 @@
 package fr.phlab.notesrapides.ui
 
+import android.content.res.Configuration
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -33,6 +34,8 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.pluralStringResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
@@ -42,6 +45,8 @@ import fr.phlab.notesrapides.R
 import fr.phlab.notesrapides.data.UiGroupedNotes
 import fr.phlab.notesrapides.data.bdd.Category
 import fr.phlab.notesrapides.data.bdd.Note
+import fr.phlab.notesrapides.utils.style.DarkAppColors
+import fr.phlab.notesrapides.utils.style.LightAppColors
 import fr.phlab.notesrapides.utils.style.MTextStyle
 import fr.phlab.notesrapides.utils.style.Theme
 import java.util.Locale
@@ -59,14 +64,13 @@ fun HomeView(
     val isDateExpanded = remember { mutableStateOf(true) }
 
     Column {
-
-
         TopAppBar(
             backgroundColor = Theme.colors.primary,
             contentColor = Theme.colors.onPrimary,
             title = {
                 CategorySelector(
                     currentCategory = currentCategory.value,
+                    onContentColor = Theme.colors.onPrimary,
                     updateCurrentCategory = {
                         viewModel.updateCurrentCategory(it)
                     }
@@ -122,6 +126,7 @@ fun HomeView(
 @Composable
 fun CategorySelector(
     modifier: Modifier = Modifier,
+    onContentColor: Color,
     currentCategory: Category?,
     updateCurrentCategory: (Category?) -> Unit
 ) {
@@ -144,7 +149,8 @@ fun CategorySelector(
         Text(
             modifier = Modifier.align(Alignment.CenterVertically),
             text = stringResource(id = R.string.category_selector_title),
-            style = MTextStyle.categorySelectorTitle
+            style = MTextStyle.categorySelectorTitle,
+            color =onContentColor
         )
         Text(
             modifier = Modifier
@@ -152,21 +158,59 @@ fun CategorySelector(
                 .padding(start = 8.dp),
             text = (currentCategory?.name
                 ?: stringResource(id = R.string.category_all_name)).uppercase(Locale.ROOT),
-            style = MTextStyle.categorySelectorTitle
+            style = MTextStyle.categorySelectorTitle,
+            color = onContentColor
         )
-        Icon(imageVector = Icons.Default.ArrowDropDown, contentDescription = null)
+        Icon(
+            modifier = modifier
+                .padding(8.dp)
+                .align(Alignment.CenterVertically),
+            tint = onContentColor,
+            painter = painterResource(R.drawable.ic_category),
+            contentDescription = null
+        )
         Spacer(modifier = Modifier.weight(1f))
     }
 
 
 }
 
-@Preview(showBackground = true)
+@Preview(showBackground = true,
+    uiMode = Configuration.UI_MODE_NIGHT_YES
+)
 @Composable
-fun CategorySelectorPreview() {
-    CategorySelector(
-        currentCategory = Category(1, "Category Name", true),
-        updateCurrentCategory = {}
+fun TopAppBarCategorySelectorPreviewNight() {
+    TopAppBar(
+        backgroundColor = Theme.colors.primary,
+        contentColor = Theme.colors.onPrimary,
+        title = {
+            CategorySelector(
+                currentCategory = Category(1, "Category Name", true),
+                updateCurrentCategory = {},
+                onContentColor = DarkAppColors.onPrimary
+            )
+        }
+    )
+
+}
+
+
+@Preview(showBackground = false,
+    uiMode = Configuration.UI_MODE_NIGHT_NO
+)
+@Composable
+fun TopAppBarCategorySelectorPreview() {
+    TopAppBar(
+        backgroundColor = Theme.colors.primary,
+        contentColor = Theme.colors.onPrimary,
+        title = {
+            CategorySelector(
+                currentCategory = Category(1, "Category Name", true),
+                updateCurrentCategory = {},
+                onContentColor = LightAppColors.onPrimary
+
+            )
+        }
     )
 }
 
@@ -213,8 +257,7 @@ fun NoteListGrouped(
     var multiNoteDialogExpand by remember { mutableStateOf(false) }
     var currentUiGroupedNotes by remember { mutableStateOf<UiGroupedNotes?>(null) }
 
-    if(multiNoteDialogExpand)
-    {
+    if (multiNoteDialogExpand) {
         MultiNoteDialogPicker(
             notes = currentUiGroupedNotes?.notes ?: listOf(),
             onSelectNote = {
@@ -264,10 +307,12 @@ fun NoteListGrouped(
                     ) {
                         items(items = notes)
                         {
-                            ItemUiGroupedNotes(item = it, onNoteGroupedClick = { newUiGroupedNotes ->
-                                currentUiGroupedNotes = newUiGroupedNotes
-                                multiNoteDialogExpand = true
-                            })
+                            ItemUiGroupedNotes(
+                                item = it,
+                                onNoteGroupedClick = { newUiGroupedNotes ->
+                                    currentUiGroupedNotes = newUiGroupedNotes
+                                    multiNoteDialogExpand = true
+                                })
                             Spacer(modifier = Modifier.width(8.dp))
                         }
                     }
