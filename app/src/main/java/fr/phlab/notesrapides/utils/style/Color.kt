@@ -24,7 +24,7 @@ val LightAppColors = AppColors(
     secondary = Color(0xFF625B71),
     onSecondary = Color(0xFFFFFFFF),
     surface = Color(0xFFFEF7FF),
-    onSurface = Color(0xFF1D1B20),
+    onSurface = Color(0xFF000000),
 )
 
 val DarkAppColors = AppColors(
@@ -33,6 +33,6 @@ val DarkAppColors = AppColors(
     secondary = Color(0xFFCCC2DC),
     onSecondary = Color(0xFF332D41),
     surface = Color(0xFF141218),
-    onSurface = Color(0xFFE6E0E9),
+    onSurface = Color(0xFFFFFFFF),
 )
 

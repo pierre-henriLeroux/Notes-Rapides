@@ -49,6 +49,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.unit.toSize
 import androidx.compose.ui.window.Dialog
+import androidx.compose.ui.window.DialogProperties
 import androidx.hilt.navigation.compose.hiltViewModel
 import fr.phlab.notesrapides.R
 import fr.phlab.notesrapides.data.bdd.Category
@@ -67,7 +68,7 @@ fun DialogDatePicker(
     val dateState = rememberDatePickerState(
         initialSelectedDateMillis = currentDate?.time ?: System.currentTimeMillis()
     )
-    Dialog(onDismissRequest = onDismiss) {
+    Dialog(onDismissRequest = onDismiss, properties = DialogProperties(usePlatformDefaultWidth = false)) {
         Column(
             modifier = Modifier
                 .fillMaxWidth()
@@ -88,16 +89,16 @@ fun DialogDatePicker(
                     onSelect(null)
                 }
             ) {
-                Text(stringResource(id = R.string.date_null))
+                Text(stringResource(id = R.string.date_null), color = Theme.colors.onSurface)
             }
-            Row()
+            Row(modifier = Modifier.padding(start = 16.dp, end = 16.dp))
             {
                 TextButton(
                     onClick = {
                         onSelect(dateState.selectedDateMillis?.let { Date(it) })
                     }
                 ) {
-                    Text(stringResource(id = R.string.ok))
+                    Text(stringResource(id = R.string.ok), color = Theme.colors.onSurface)
                 }
                 Spacer(modifier = Modifier.weight(1f))
                 TextButton(
@@ -105,7 +106,7 @@ fun DialogDatePicker(
                         onDismiss()
                     }
                 ) {
-                    Text(stringResource(id = R.string.cancel))
+                    Text(stringResource(id = R.string.cancel), color = Theme.colors.onSurface)
                 }
             }
         }
@@ -146,7 +147,7 @@ fun DialogPlacePiker(
                     onSelect(null)
                 }
             ) {
-                Text(stringResource(id = R.string.place_cancel))
+                Text(stringResource(id = R.string.place_cancel), color = Theme.colors.onSurface)
             }
             Row()
             {
@@ -155,7 +156,7 @@ fun DialogPlacePiker(
                         onSelect(viewModel.currentPlace.value)
                     }
                 ) {
-                    Text(stringResource(id = R.string.ok))
+                    Text(stringResource(id = R.string.ok), color = Theme.colors.onSurface)
                 }
                 Spacer(modifier = Modifier.weight(1f))
                 TextButton(
@@ -163,7 +164,7 @@ fun DialogPlacePiker(
                         onDismiss()
                     }
                 ) {
-                    Text(stringResource(id = R.string.cancel))
+                    Text(stringResource(id = R.string.cancel), color = Theme.colors.onSurface)
                 }
             }
         }
@@ -205,7 +206,7 @@ fun DialogCategoryPicker(
                     onSelect(null)
                 }
             ) {
-                Text(stringResource(id = R.string.category_all_button))
+                Text(stringResource(id = R.string.category_all_button), color = Theme.colors.onSurface)
             }
             Row()
             {
@@ -214,7 +215,7 @@ fun DialogCategoryPicker(
                         onSelect(viewModel.currentCategory.value)
                     }
                 ) {
-                    Text(stringResource(id = R.string.ok))
+                    Text(stringResource(id = R.string.ok), color = Theme.colors.onSurface)
                 }
                 Spacer(modifier = Modifier.weight(1f))
                 TextButton(
@@ -222,7 +223,7 @@ fun DialogCategoryPicker(
                         onDismiss()
                     }
                 ) {
-                    Text(stringResource(id = R.string.cancel))
+                    Text(stringResource(id = R.string.cancel), color = Theme.colors.onSurface)
                 }
             }
         }

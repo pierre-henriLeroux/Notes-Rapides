@@ -1,5 +1,6 @@
 package fr.phlab.notesrapides.ui
 
+import android.content.res.Configuration
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -27,10 +28,14 @@ import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.ArrowDropDown
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.pluralStringResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
@@ -40,6 +45,8 @@ import fr.phlab.notesrapides.R
 import fr.phlab.notesrapides.data.UiGroupedNotes
 import fr.phlab.notesrapides.data.bdd.Category
 import fr.phlab.notesrapides.data.bdd.Note
+import fr.phlab.notesrapides.utils.style.DarkAppColors
+import fr.phlab.notesrapides.utils.style.LightAppColors
 import fr.phlab.notesrapides.utils.style.MTextStyle
 import fr.phlab.notesrapides.utils.style.Theme
 import java.util.Locale
@@ -57,79 +64,73 @@ fun HomeView(
     val isDateExpanded = remember { mutableStateOf(true) }
 
     Column {
-
-
-    TopAppBar(
-        backgroundColor = Theme.colors.primary,
-        contentColor = Theme.colors.onPrimary,
-        title = {
-            CategorySelector(
-                currentCategory = currentCategory.value,
-                updateCurrentCategory = {
-                    viewModel.updateCurrentCategory(it)
-                }
-            )
-        }
-    )
-
-    Box(
-        modifier = Modifier
-            .padding(Theme.dimens.screenSpacing)
-            .background(Theme.colors.surface)
-            .fillMaxSize()
-    ) {
-        Column {
-           /* CategorySelector(
-                currentCategory = currentCategory.value,
-                updateCurrentCategory = {
-                    viewModel.updateCurrentCategory(it)
-                }
-            )*/
-            Spacer(modifier = Modifier.height(16.dp))
-            NoteListGrouped(
-                notes = uiNotesByDate.value,
-                title = stringResource(id = R.string.home_order_by_date),
-                onNoteClick = onNoteClick,
-                isExpanded = isDateExpanded.value,
-                onExpandClick = { isDateExpanded.value = !isDateExpanded.value }
-            )
-            Spacer(modifier = Modifier.height(16.dp))
-            NoteList(
-                notes = uiNotes.value,
-                onNoteClick = onNoteClick
-            )
-        }
-
-        ExtendedFloatingActionButton(
-            modifier = Modifier
-                .align(Alignment.BottomEnd)
-                .padding(bottom = 16.dp),
-            text = {
-                Text(text = stringResource(id = R.string.noteCreate))
-            },
-            contentColor = Theme.colors.onSecondary,
-            backgroundColor = Theme.colors.secondary,
-            icon = {
-                Icon(
-                    Icons.Filled.Add,
-                    contentDescription = stringResource(id = R.string.noteCreate)
+        TopAppBar(
+            backgroundColor = Theme.colors.primary,
+            contentColor = Theme.colors.onPrimary,
+            title = {
+                CategorySelector(
+                    currentCategory = currentCategory.value,
+                    onContentColor = Theme.colors.onPrimary,
+                    updateCurrentCategory = {
+                        viewModel.updateCurrentCategory(it)
+                    }
                 )
-            },
-            elevation = FloatingActionButtonDefaults.elevation(8.dp),
-            onClick = {
-                onAddNote()
-            })
+            }
+        )
+
+        Box(
+            modifier = Modifier
+                .padding(Theme.dimens.screenSpacing)
+                .background(Theme.colors.surface)
+                .fillMaxSize()
+        ) {
+            Column {
+                Spacer(modifier = Modifier.height(16.dp))
+                NoteListGrouped(
+                    notes = uiNotesByDate.value,
+                    title = stringResource(id = R.string.home_order_by_date),
+                    onNoteClick = onNoteClick,
+                    isExpanded = isDateExpanded.value,
+                    onExpandClick = { isDateExpanded.value = !isDateExpanded.value }
+                )
+                Spacer(modifier = Modifier.height(16.dp))
+                NoteList(
+                    notes = uiNotes.value,
+                    onNoteClick = onNoteClick
+                )
+            }
+
+            ExtendedFloatingActionButton(
+                modifier = Modifier
+                    .align(Alignment.BottomEnd)
+                    .padding(bottom = 16.dp),
+                text = {
+                    Text(text = stringResource(id = R.string.noteCreate))
+                },
+                contentColor = Theme.colors.onSecondary,
+                backgroundColor = Theme.colors.secondary,
+                icon = {
+                    Icon(
+                        Icons.Filled.Add,
+                        contentDescription = stringResource(id = R.string.noteCreate)
+                    )
+                },
+                elevation = FloatingActionButtonDefaults.elevation(8.dp),
+                onClick = {
+                    onAddNote()
+                })
+        }
     }
-}
 }
 
 @Composable
 fun CategorySelector(
     modifier: Modifier = Modifier,
+    onContentColor: Color,
     currentCategory: Category?,
     updateCurrentCategory: (Category?) -> Unit
 ) {
-    var dialogCategoryPicker = remember { mutableStateOf(false) }
+    val dialogCategoryPicker = remember { mutableStateOf(false) }
     if (dialogCategoryPicker.value) {
         DialogCategoryPicker(
             currentCategoryId = currentCategory?.id,
@@ -148,7 +149,8 @@ fun CategorySelector(
         Text(
             modifier = Modifier.align(Alignment.CenterVertically),
             text = stringResource(id = R.string.category_selector_title),
-            style = MTextStyle.categorySelectorTitle
+            style = MTextStyle.categorySelectorTitle,
+            color =onContentColor
         )
         Text(
             modifier = Modifier
@@ -156,21 +158,59 @@ fun CategorySelector(
                 .padding(start = 8.dp),
             text = (currentCategory?.name
                 ?: stringResource(id = R.string.category_all_name)).uppercase(Locale.ROOT),
-            style = MTextStyle.categorySelectorTitle
+            style = MTextStyle.categorySelectorTitle,
+            color = onContentColor
         )
-        Icon(imageVector = Icons.Default.ArrowDropDown, contentDescription = null)
+        Icon(
+            modifier = modifier
+                .padding(8.dp)
+                .align(Alignment.CenterVertically),
+            tint = onContentColor,
+            painter = painterResource(R.drawable.ic_category),
+            contentDescription = null
+        )
         Spacer(modifier = Modifier.weight(1f))
     }
 
 
 }
 
-@Preview(showBackground = true)
+@Preview(showBackground = true,
+    uiMode = Configuration.UI_MODE_NIGHT_YES
+)
 @Composable
-fun CategorySelectorPreview() {
-    CategorySelector(
-        currentCategory = Category(1, "Category Name", true),
-        updateCurrentCategory = {}
+fun TopAppBarCategorySelectorPreviewNight() {
+    TopAppBar(
+        backgroundColor = Theme.colors.primary,
+        contentColor = Theme.colors.onPrimary,
+        title = {
+            CategorySelector(
+                currentCategory = Category(1, "Category Name", true),
+                updateCurrentCategory = {},
+                onContentColor = DarkAppColors.onPrimary
+            )
+        }
+    )
+
+}
+
+
+@Preview(showBackground = false,
+    uiMode = Configuration.UI_MODE_NIGHT_NO
+)
+@Composable
+fun TopAppBarCategorySelectorPreview() {
+    TopAppBar(
+        backgroundColor = Theme.colors.primary,
+        contentColor = Theme.colors.onPrimary,
+        title = {
+            CategorySelector(
+                currentCategory = Category(1, "Category Name", true),
+                updateCurrentCategory = {},
+                onContentColor = LightAppColors.onPrimary
+
+            )
+        }
     )
 }
 
@@ -181,8 +221,7 @@ fun NoteList(
     onNoteClick: (Note) -> Unit = {}
 ) {
     Column(modifier = modifier) {
-        if(notes.isNotEmpty())
-        {
+        if (notes.isNotEmpty()) {
             LazyRow(
                 modifier = Modifier.defaultMinSize(minHeight = 100.dp),
                 contentPadding = PaddingValues(horizontal = 8.dp)
@@ -193,8 +232,7 @@ fun NoteList(
                     Spacer(modifier = Modifier.width(8.dp))
                 }
             }
-        }
-        else{
+        } else {
             Text(
                 modifier = Modifier.align(Alignment.CenterHorizontally),
                 text = stringResource(id = R.string.note_list_empty),
@@ -215,6 +253,21 @@ fun NoteListGrouped(
     onNoteClick: (Note) -> Unit = {},
     onExpandClick: () -> Unit = {}
 ) {
+
+    var multiNoteDialogExpand by remember { mutableStateOf(false) }
+    var currentUiGroupedNotes by remember { mutableStateOf<UiGroupedNotes?>(null) }
+
+    if (multiNoteDialogExpand) {
+        MultiNoteDialogPicker(
+            notes = currentUiGroupedNotes?.notes ?: listOf(),
+            onSelectNote = {
+                multiNoteDialogExpand = false
+                onNoteClick(it)
+            }, onDismiss = {
+                multiNoteDialogExpand = false
+            })
+
+    }
 
     Column(modifier = modifier.border(1.dp, Theme.colors.colorBorder)) {
         Row(
@@ -238,8 +291,7 @@ fun NoteListGrouped(
             Spacer(modifier = Modifier.weight(1f))
         }
         if (isExpanded) {
-            if(notes.isEmpty())
-            {
+            if (notes.isEmpty()) {
                 Text(
                     modifier = Modifier
                         .align(Alignment.CenterHorizontally)
@@ -247,9 +299,7 @@ fun NoteListGrouped(
                     text = stringResource(id = R.string.note_list_empty),
                     style = MTextStyle.noteContent
                 )
-            }
-            else
-            {
+            } else {
                 Box(modifier = Modifier.padding(8.dp)) {
                     LazyRow(
                         modifier = Modifier.defaultMinSize(minHeight = 100.dp),
@@ -257,7 +307,12 @@ fun NoteListGrouped(
                     ) {
                         items(items = notes)
                         {
-                            ItemUiGroupedNotes(item = it, onNoteClick = onNoteClick)
+                            ItemUiGroupedNotes(
+                                item = it,
+                                onNoteGroupedClick = { newUiGroupedNotes ->
+                                    currentUiGroupedNotes = newUiGroupedNotes
+                                    multiNoteDialogExpand = true
+                                })
                             Spacer(modifier = Modifier.width(8.dp))
                         }
                     }
@@ -290,8 +345,8 @@ fun ItemUINote(item: Note, onNoteClick: (Note) -> Unit) {
         Row(
             modifier = Modifier
                 .padding(8.dp)
-                .width(200.dp)
-                .height(100.dp)
+                .width(Theme.dimens.noteBoxWidth)
+                .height(Theme.dimens.noteBoxHeight)
         ) {
             Column {
                 Text(text = item.title ?: "", style = MTextStyle.noteTitle)
@@ -338,8 +393,8 @@ fun NoteListDatePreview() {
 
 
 @Composable
-fun ItemUiGroupedNotes(item: UiGroupedNotes, onNoteClick: (Note) -> Unit) {
-    Card(modifier = Modifier.clickable { }) {//todo dialog for select note
+fun ItemUiGroupedNotes(item: UiGroupedNotes, onNoteGroupedClick: (UiGroupedNotes) -> Unit) {
+    Card(modifier = Modifier.clickable { onNoteGroupedClick(item) }) {
         Row(
             modifier = Modifier
                 .padding(8.dp)
@@ -416,7 +471,7 @@ fun ItemUiGroupedNotesPreview() {
                 Note(3, "30/05/2024", null, 1, title = "test3", content = null)
 
             )
-        ), onNoteClick = {}
+        ), onNoteGroupedClick = {}
     )
 }
 
