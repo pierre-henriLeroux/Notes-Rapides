@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="home_order_by_date">Trier par date</string>
+    <string name="home_order_by_title">Trier par titre</string>
+
+</resources>
