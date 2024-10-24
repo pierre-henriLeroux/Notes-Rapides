@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="note_list_empty">aucune notes</string>
+    <string name="category_all_button">Toute catégorie</string>
+    <string name="category_all_name">Tout</string>
+
+    <string name="category_selector_title">Catégorie : </string>
+
+    <plurals name="note_grouped_nb">
+        <item quantity="one">%1$s note</item>
+        <item quantity="many">%1$s notes</item>
+    </plurals>
+
+    <string name="note_create">New Note</string>
+
+    <string name="ok">OK</string>
+    <string name="cancel">Annuler</string>
+    <string name="date_null">Aucune</string>
+    <string name="place_null">Aucune</string>
+    <string name="place_cancel">Retirer la place</string>
+    <string name="remove_date">Retirer la date</string>
+    <string name="place_place_holder">Nom de la place</string>
+</resources>

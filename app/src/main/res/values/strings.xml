@@ -1,27 +1,25 @@
 <resources>
-    <string name="app_name">NotesRapides</string>
-    <string name="home_order_by_date">Order by date</string>
-    <string name="home_order_by_title">Order by title</string>
-    <string name="home_order_by_all">All</string>
+    <string name="app_name" translatable="false">NotesRapides</string>
+
 
     <string name="note_list_empty">No notes</string>
 
     <string name="category_all_button">All category</string>
     <string name="category_all_name">All</string>
+
     <string name="category_selector_title">Category : </string>
     <plurals name="note_grouped_nb">
         <item quantity="one">%1$s note</item>
-        <item quantity="other">%1$s notes</item>
+        <item quantity="many">%1$s notes</item>
     </plurals>
 
-    <string name="note_confirm">Note</string>
-    <string name="noteCreate">New Note</string>
+    <string name="note_create">New Note</string>
 
     <string name="ok">OK</string>
     <string name="cancel">Cancel</string>
     <string name="date_null">None</string>
     <string name="place_null">None</string>
-    <string name="place_cancel">Remove Place</string>
-    <string name="remove_date">Remove Date</string>
+    <string name="place_cancel">Remove place</string>
+    <string name="remove_date">Remove date</string>
     <string name="place_place_holder">Place name</string>
 </resources>
