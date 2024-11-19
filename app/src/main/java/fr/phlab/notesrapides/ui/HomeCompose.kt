@@ -105,14 +105,14 @@ fun HomeView(
                     .align(Alignment.BottomEnd)
                     .padding(bottom = 16.dp),
                 text = {
-                    Text(text = stringResource(id = R.string.noteCreate))
+                    Text(text = stringResource(id = R.string.note_create))
                 },
                 contentColor = Theme.colors.onSecondary,
                 backgroundColor = Theme.colors.secondary,
                 icon = {
                     Icon(
                         Icons.Filled.Add,
-                        contentDescription = stringResource(id = R.string.noteCreate)
+                        contentDescription = stringResource(id = R.string.note_create)
                     )
                 },
                 elevation = FloatingActionButtonDefaults.elevation(8.dp),

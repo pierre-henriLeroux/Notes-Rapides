@@ -20,7 +20,6 @@ interface CategoryDao {
     @Query("SELECT * FROM category WHERE name LIKE :name")
     suspend fun getByName(name: String): Category?
 
-
     @Query("SELECT * FROM category WHERE id = :id")
     suspend fun getById(id: Long): Category?
 
