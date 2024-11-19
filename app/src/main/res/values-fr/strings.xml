@@ -10,6 +10,8 @@
     <plurals name="note_grouped_nb">
         <item quantity="one">%1$s note</item>
         <item quantity="many">%1$s notes</item>
+        <item quantity="other">%1$s notes</item>
+
     </plurals>
 
     <string name="note_create">New Note</string>
